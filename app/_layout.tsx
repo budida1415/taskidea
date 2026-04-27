@@ -16,14 +16,19 @@ function AuthGuard() {
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    // Failsafe: always become ready after 2s even if loadStoredAuth hangs
-    const fallback = setTimeout(() => setIsReady(true), 2000)
+    console.log('[AuthGuard] mount — starting auth load')
+    const fallback = setTimeout(() => {
+      console.log('[AuthGuard] fallback fired — forcing ready')
+      setIsReady(true)
+    }, 2000)
     loadStoredAuth()
       .then((stored) => {
+        console.log('[AuthGuard] loadStoredAuth resolved, hasUser:', !!stored)
         if (stored) setUser(stored)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[AuthGuard] loadStoredAuth error:', e))
       .finally(() => {
+        console.log('[AuthGuard] finally — setting ready')
         clearTimeout(fallback)
         setIsReady(true)
       })
@@ -31,11 +36,14 @@ function AuthGuard() {
   }, [])
 
   useEffect(() => {
+    console.log('[AuthGuard] nav effect — isReady:', isReady, 'segments:', segments, 'user:', !!user)
     if (!isReady) return
     const inAuthGroup = segments[0] === '(auth)'
     if (!user && !inAuthGroup) {
+      console.log('[AuthGuard] redirecting to /(auth)')
       router.replace('/(auth)')
     } else if (user && inAuthGroup) {
+      console.log('[AuthGuard] redirecting to /(tabs)/tasks')
       router.replace('/(tabs)/tasks')
     }
   }, [user, segments, isReady])
