@@ -16,10 +16,18 @@ function AuthGuard() {
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    loadStoredAuth().then((stored) => {
-      if (stored) setUser(stored)
-      setIsReady(true)
-    })
+    // Failsafe: always become ready after 2s even if loadStoredAuth hangs
+    const fallback = setTimeout(() => setIsReady(true), 2000)
+    loadStoredAuth()
+      .then((stored) => {
+        if (stored) setUser(stored)
+      })
+      .catch(() => {})
+      .finally(() => {
+        clearTimeout(fallback)
+        setIsReady(true)
+      })
+    return () => clearTimeout(fallback)
   }, [])
 
   useEffect(() => {
