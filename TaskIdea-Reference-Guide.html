@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TaskIdea — Complete Reference Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f7fb;
+    color: #1a2a3a;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .cover {
+    background: linear-gradient(135deg, #0A1628 0%, #0D7377 100%);
+    color: white;
+    padding: 80px 60px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+  .cover .tagline {
+    font-size: 18px;
+    color: #2EBFBF;
+    margin-bottom: 24px;
+  }
+  .cover .meta {
+    font-size: 13px;
+    color: #84C5C5;
+    border-top: 1px solid #1E3A5F;
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+
+  .toc {
+    background: white;
+    border-left: 4px solid #14A3A3;
+    padding: 28px 36px;
+    margin: 32px 48px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 { color: #0D7377; font-size: 16px; margin-bottom: 14px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin-bottom: 5px; color: #1E3A5F; font-weight: 500; }
+
+  .content {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 48px 60px;
+  }
+
+  h2.section {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0A1628;
+    margin: 48px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #14A3A3;
+    counter-increment: section;
+  }
+  h2.section::before {
+    content: counter(section) ". ";
+    color: #14A3A3;
+  }
+  body { counter-reset: section; }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0D7377;
+    margin: 24px 0 10px;
+  }
+
+  p { margin-bottom: 12px; color: #2c3e50; }
+
+  code {
+    background: #0A1628;
+    color: #2EBFBF;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+  }
+
+  pre {
+    background: #0A1628;
+    color: #E8F4F4;
+    padding: 18px 20px;
+    border-radius: 8px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 14px 0;
+    overflow-x: auto;
+    border-left: 3px solid #14A3A3;
+  }
+  pre .comment { color: #6BA3A3; }
+
+  .callout {
+    background: #E0F4F4;
+    border-left: 4px solid #14A3A3;
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    color: #0A1628;
+  }
+  .callout.warning {
+    background: #FFF4E5;
+    border-left-color: #F4A261;
+  }
+  .callout.success {
+    background: #E5F9F0;
+    border-left-color: #2EBFBF;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  th {
+    background: #0F1F3D;
+    color: #E8F4F4;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #dde8f0;
+  }
+  tr:nth-child(even) td { background: #f4f8fb; }
+
+  ul, ol {
+    padding-left: 22px;
+    margin-bottom: 12px;
+  }
+  li { margin-bottom: 6px; color: #2c3e50; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: #14A3A3;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body strong { color: #0A1628; display: block; margin-bottom: 3px; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+  }
+  .badge.free { background: #E5F9F0; color: #0D7377; }
+  .badge.paid { background: #FFF4E5; color: #c0572a; }
+  .badge.recommended { background: #E0F4F4; color: #0D7377; }
+
+  .page-break { page-break-before: always; }
+
+  footer {
+    text-align: center;
+    padding: 32px;
+    color: #84C5C5;
+    font-size: 12px;
+    background: #0A1628;
+    color: #6BA3A3;
+    margin-top: 48px;
+  }
+
+  @media print {
+    body { background: white; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    pre { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <h1>TaskIdea</h1>
+  <div class="tagline">Complete Reference Guide</div>
+  <p style="color:#A8DADA; max-width:520px;">
+    A cross-platform task list and idea capture app built with React Native (Expo).
+    All data is stored in your personal Google Drive — no external servers.
+  </p>
+  <div class="meta">
+    Theme: Ocean Depths &nbsp;|&nbsp;
+    Platform: iOS · Android · Web &nbsp;|&nbsp;
+    Backend: Google Drive API &nbsp;|&nbsp;
+    Version: 1.0.0 &nbsp;|&nbsp;
+    Date: April 2026
+  </div>
+</div>
+
+<!-- Table of Contents -->
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li>Project Overview</li>
+    <li>Tech Stack & Architecture</li>
+    <li>Cost Breakdown</li>
+    <li>Google Cloud Console Setup</li>
+    <li>Installing Node.js</li>
+    <li>Running the App Locally</li>
+    <li>Deploying to Web (Vercel)</li>
+    <li>Deploying to iOS (Free)</li>
+    <li>Deploying to Android (Free)</li>
+    <li>App Usage Guide</li>
+    <li>Troubleshooting</li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ─── SECTION 1 ─── -->
+<h2 class="section">Project Overview</h2>
+
+<p>
+  TaskIdea is a personal productivity app for managing tasks and capturing ideas.
+  It is designed so that <strong>all your data lives in your own Google Drive</strong> —
+  nothing is stored on any external server. You own your data completely.
+</p>
+
+<table>
+  <tr><th>Feature</th><th>Description</th></tr>
+  <tr><td>Tasks</td><td>Create, complete, and organize tasks with priorities, due dates, and tags</td></tr>
+  <tr><td>Ideas</td><td>Capture ideas with color accents, notes, and pin support</td></tr>
+  <tr><td>Sync</td><td>Automatic sync to Google Drive within 1 second of any change</td></tr>
+  <tr><td>Offline</td><td>Works without internet; changes sync when connection returns</td></tr>
+  <tr><td>Multi-device</td><td>Use on phone, tablet, and desktop with the same Google account</td></tr>
+  <tr><td>Theme</td><td>Ocean Depths — navy, teal, and seafoam dark theme</td></tr>
+</table>
+
+<p><strong>Project location on your computer:</strong> <code>c:\A-Claude\TaskIdea\</code></p>
+
+
+<!-- ─── SECTION 2 ─── -->
+<h2 class="section">Tech Stack & Architecture</h2>
+
+<table>
+  <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+  <tr><td>Frontend</td><td>React Native (Expo SDK 51)</td><td>iOS, Android, and Web from one codebase</td></tr>
+  <tr><td>Navigation</td><td>Expo Router v3</td><td>File-based tab navigation</td></tr>
+  <tr><td>Authentication</td><td>expo-auth-session + Google OAuth 2.0</td><td>Google Sign-In on all platforms</td></tr>
+  <tr><td>Storage</td><td>Google Drive REST API</td><td>tasks.json and ideas.json in your Drive</td></tr>
+  <tr><td>State</td><td>Zustand</td><td>In-memory app state</td></tr>
+  <tr><td>Cache</td><td>AsyncStorage</td><td>Offline data access</td></tr>
+  <tr><td>Token storage</td><td>expo-secure-store</td><td>Secure OAuth token storage</td></tr>
+</table>
+
+<h3>Google Drive Data Structure</h3>
+<pre>
+My Drive/
+└── TaskIdea/
+    ├── tasks.json     ← { version: 1, items: [ ...your tasks ] }
+    └── ideas.json     ← { version: 1, items: [ ...your ideas ] }
+</pre>
+
+<h3>Project File Structure</h3>
+<pre>
+c:\A-Claude\TaskIdea\
+├── app/
+│   ├── _layout.tsx              <span class="comment"># Root layout + auth guard</span>
+│   ├── (auth)/index.tsx         <span class="comment"># Sign-in screen</span>
+│   └── (tabs)/
+│       ├── _layout.tsx          <span class="comment"># Tab bar</span>
+│       ├── tasks.tsx            <span class="comment"># Tasks screen</span>
+│       ├── ideas.tsx            <span class="comment"># Ideas board</span>
+│       ├── settings.tsx         <span class="comment"># Settings screen</span>
+│       └── help.tsx             <span class="comment"># Help screen</span>
+├── components/                  <span class="comment"># UI components</span>
+├── services/                    <span class="comment"># Google Drive API + Auth</span>
+├── store/useAppStore.ts         <span class="comment"># Zustand state</span>
+├── hooks/                       <span class="comment"># useDriveSync, useColorScheme</span>
+├── constants/                   <span class="comment"># Colors, config</span>
+├── types/index.ts               <span class="comment"># TypeScript interfaces</span>
+├── package.json
+├── app.json
+└── .env                         <span class="comment"># Google Client IDs (keep private)</span>
+</pre>
+
+
+<!-- ─── SECTION 3 ─── -->
+<h2 class="section">Cost Breakdown</h2>
+
+<div class="callout success">
+  <strong>Good news:</strong> The "no backend" design means your costs do NOT increase with usage.
+  Each user's data lives in their own Google Drive.
+</div>
+
+<table>
+  <tr><th>Service</th><th>Cost</th><th>Notes</th></tr>
+  <tr><td>Google Drive API</td><td><strong>Free</strong></td><td>1 billion API calls/day limit — impossible to exceed</td></tr>
+  <tr><td>Google Cloud Console</td><td><strong>Free</strong></td><td>OAuth client IDs are free</td></tr>
+  <tr><td>Vercel (web hosting)</td><td><strong>Free</strong></td><td>Free tier covers personal use completely</td></tr>
+  <tr><td>Web PWA (iOS + Android)</td><td><strong>Free</strong></td><td>Add to Home Screen via browser</td></tr>
+  <tr><td>APK Sideload (Android)</td><td><strong>Free</strong></td><td>EAS Build free tier: 30 builds/month</td></tr>
+  <tr><td>Apple App Store (iOS)</td><td>$99/year</td><td>Only needed for App Store distribution</td></tr>
+  <tr><td>Google Play Store</td><td>$25 one-time</td><td>Only needed for Play Store distribution</td></tr>
+</table>
+
+<p><strong>For personal use: total cost is $0.</strong></p>
+
+
+<!-- ─── SECTION 4 ─── -->
+<h2 class="section">Google Cloud Console Setup</h2>
+
+<p>This is required to enable Google Sign-In and Google Drive access.</p>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-body">
+    <strong>Create a project</strong>
+    Go to <code>console.cloud.google.com</code> → Click "New Project" → Name it "TaskIdea" → Create
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-body">
+    <strong>Enable APIs</strong>
+    Go to APIs & Services → Library → Search and enable:
+    <ul>
+      <li>Google Drive API</li>
+      <li>Google People API</li>
+    </ul>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-body">
+    <strong>Configure OAuth Consent Screen</strong>
+    Go to APIs & Services → OAuth consent screen:
+    <ul>
+      <li>User Type: External → Create</li>
+      <li>App name: TaskIdea</li>
+      <li>Support email: your Gmail</li>
+      <li>Scopes: add <code>drive.file</code>, <code>openid</code>, <code>email</code>, <code>profile</code></li>
+      <li>Publishing status: leave as <strong>Testing</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-body">
+    <strong>Add yourself as a Test User</strong>
+    On the OAuth consent screen page → click the <strong>Audience</strong> tab →
+    scroll to "Test users" → Add Users → enter <code>hbudida@gmail.com</code> → Save
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">5</div>
+  <div class="step-body">
+    <strong>Create OAuth 2.0 Client IDs</strong>
+    Go to APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID:
+    <ul>
+      <li><strong>Web:</strong> Add Authorized redirect URIs:
+        <code>http://localhost:19006</code>, <code>http://localhost:8081</code>,
+        and your Vercel URL e.g. <code>https://taskidea.vercel.app</code></li>
+      <li><strong>iOS:</strong> Bundle ID = <code>com.taskidea.app</code></li>
+      <li><strong>Android:</strong> Package = <code>com.taskidea.app</code></li>
+    </ul>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">6</div>
+  <div class="step-body">
+    <strong>Copy Client IDs to .env file</strong>
+    Open <code>c:\A-Claude\TaskIdea\.env</code> and fill in:
+    <pre>
+EXPO_PUBLIC_GOOGLE_CLIENT_ID_WEB=your-web-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_CLIENT_ID_IOS=your-ios-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_CLIENT_ID_ANDROID=your-android-id.apps.googleusercontent.com</pre>
+  </div>
+</div>
+
+<div class="callout warning">
+  <strong>Important:</strong> Never share your .env file or commit it to GitHub. It contains private credentials.
+</div>
+
+
+<!-- ─── SECTION 5 ─── -->
+<div class="page-break"></div>
+<h2 class="section">Installing Node.js</h2>
+
+<p>Node.js is required to run and build the app.</p>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-body">
+    <strong>Download</strong>
+    Go to <code>nodejs.org</code> → Click the <strong>LTS</strong> button (left green button) → Download the .msi file
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-body">
+    <strong>Install</strong>
+    Run the .msi file → Accept all defaults → Click Install → Allow UAC prompt → Finish
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-body">
+    <strong>Verify</strong>
+    Open a new Command Prompt (Win+R → cmd → Enter) and run:
+    <pre>
+node --version
+npm --version</pre>
+    Both should show version numbers.
+  </div>
+</div>
+
+<div class="callout">
+  <strong>Tip:</strong> Always use <strong>Command Prompt (cmd)</strong>, not PowerShell, for running npm commands.
+  After installing Node.js, close and reopen your terminal.
+</div>
+
+
+<!-- ─── SECTION 6 ─── -->
+<h2 class="section">Running the App Locally</h2>
+
+<p>Open Command Prompt and navigate to the project folder:</p>
+
+<pre>
+cd c:\A-Claude\TaskIdea</pre>
+
+<h3>First-time setup (run once)</h3>
+<pre>
+npm install --legacy-peer-deps</pre>
+
+<h3>Start the web app</h3>
+<pre>
+npx expo start --web</pre>
+<p>Opens the app at <code>http://localhost:19006</code> in your browser.</p>
+
+<h3>Start for mobile (Expo Go)</h3>
+<pre>
+npx expo start</pre>
+<p>Scan the QR code with the Expo Go app on your phone.</p>
+
+<h3>Future updates — redeploy to Vercel</h3>
+<pre>
+npx expo export --platform web
+vercel dist --prod</pre>
+
+
+<!-- ─── SECTION 7 ─── -->
+<h2 class="section">Deploying to Web (Vercel)</h2>
+
+<div class="callout success">
+  <strong>Status:</strong> Already deployed at <strong>https://taskidea.vercel.app</strong>
+</div>
+
+<h3>Steps taken</h3>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-body">
+    <strong>Build web app</strong>
+    <pre>npx expo export --platform web</pre>
+    Creates a <code>dist/</code> folder with the built web app.
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-body">
+    <strong>Install Vercel CLI and deploy</strong>
+    <pre>
+npm install -g vercel
+vercel dist</pre>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-body">
+    <strong>Add environment variable in Vercel Dashboard</strong>
+    vercel.com/dashboard → taskidea project → Settings → Environment Variables → Add:
+    <code>EXPO_PUBLIC_GOOGLE_CLIENT_ID_WEB</code> = your web client ID
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-body">
+    <strong>Add Vercel URL to Google Cloud Console</strong>
+    Credentials → Web Client ID → Authorized redirect URIs → add <code>https://taskidea.vercel.app</code>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">5</div>
+  <div class="step-body">
+    <strong>Redeploy with env variable</strong>
+    <pre>
+npx expo export --platform web
+vercel dist --prod</pre>
+  </div>
+</div>
+
+<h3>To update the web app after code changes</h3>
+<pre>
+npx expo export --platform web
+vercel dist --prod</pre>
+
+
+<!-- ─── SECTION 8 ─── -->
+<div class="page-break"></div>
+<h2 class="section">Deploying to iOS (Free)</h2>
+
+<h3>Option A — PWA via Safari <span class="badge recommended">Recommended</span> <span class="badge free">Free</span></h3>
+<p>The app is already on Vercel. Just add it to your iPhone home screen:</p>
+<ol>
+  <li>Open <strong>Safari</strong> on your iPhone (must be Safari, not Chrome)</li>
+  <li>Go to <code>https://taskidea.vercel.app</code></li>
+  <li>Tap the <strong>Share</strong> button (box with arrow at the bottom of Safari)</li>
+  <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+  <li>Tap <strong>Add</strong></li>
+</ol>
+<p>A TaskIdea icon appears on your home screen. Opens full-screen. Works offline. No expiry.</p>
+
+<h3>Option B — Expo Go <span class="badge free">Free</span></h3>
+<ol>
+  <li>Install <strong>Expo Go</strong> from the App Store</li>
+  <li>Run <code>npx expo start</code> on your PC (same Wi-Fi as iPhone)</li>
+  <li>Scan the QR code shown in the terminal with your iPhone camera</li>
+</ol>
+<div class="callout warning">
+  <strong>Limitation:</strong> Requires your PC to be on and running. Not suitable for daily standalone use.
+</div>
+
+<h3>Option C — Apple App Store <span class="badge paid">$99/year</span></h3>
+<p>Required only if you want to distribute to other users. Not needed for personal use.</p>
+
+<div class="callout">
+  <strong>Note:</strong> Xcode sideloading (another free method) requires a Mac. Since your computer
+  is Windows, this option is not available.
+</div>
+
+
+<!-- ─── SECTION 9 ─── -->
+<h2 class="section">Deploying to Android (Free)</h2>
+
+<h3>Option A — PWA via Chrome <span class="badge recommended">Recommended</span> <span class="badge free">Free</span></h3>
+<ol>
+  <li>Open <strong>Chrome</strong> on your Android phone</li>
+  <li>Go to <code>https://taskidea.vercel.app</code></li>
+  <li>Tap the <strong>3-dot menu</strong> (top right)</li>
+  <li>Tap <strong>"Add to Home Screen"</strong></li>
+  <li>Tap <strong>Add</strong></li>
+</ol>
+
+<h3>Option B — APK Sideload <span class="badge free">Free</span></h3>
+<p>Builds a real native Android app and installs it directly — no Play Store needed.</p>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-body">
+    <strong>Create a free Expo account</strong>
+    Go to <code>expo.dev</code> → Sign up (free)
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-body">
+    <strong>Install EAS CLI and login</strong>
+    <pre>
+npm install -g eas-cli
+eas login</pre>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-body">
+    <strong>Build the APK</strong>
+    <pre>eas build --platform android --profile preview</pre>
+    Takes 5–10 minutes. Runs on Expo's servers. Gives you a download link when done.
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-body">
+    <strong>Install on Android phone</strong>
+    <ul>
+      <li>Download the .apk file to your phone</li>
+      <li>Open the file → tap <strong>Allow from this source</strong> → tap <strong>Install</strong></li>
+    </ul>
+  </div>
+</div>
+
+<h3>Comparison</h3>
+<table>
+  <tr><th></th><th>PWA</th><th>APK Sideload</th></tr>
+  <tr><td>Setup time</td><td>1 minute</td><td>15–20 minutes</td></tr>
+  <tr><td>Feels native</td><td>Close</td><td>Yes, fully native</td></tr>
+  <tr><td>Updates</td><td>Automatic</td><td>Rebuild needed</td></tr>
+  <tr><td>Cost</td><td>Free</td><td>Free</td></tr>
+</table>
+
+
+<!-- ─── SECTION 10 ─── -->
+<div class="page-break"></div>
+<h2 class="section">App Usage Guide</h2>
+
+<h3>Tasks</h3>
+<table>
+  <tr><th>Action</th><th>How to do it</th></tr>
+  <tr><td>Create a task</td><td>Tap the teal <strong>+</strong> button (bottom right)</td></tr>
+  <tr><td>Complete a task</td><td>Tap the circle checkbox on the left of the task card</td></tr>
+  <tr><td>Edit a task</td><td>Tap anywhere on the task card (not checkbox or trash)</td></tr>
+  <tr><td>Delete a task</td><td>Tap the trash icon on the right of the task card</td></tr>
+  <tr><td>Filter tasks</td><td>Use All / Active / Done buttons at the top</td></tr>
+  <tr><td>Refresh from Drive</td><td>Pull down on the task list</td></tr>
+</table>
+
+<h3>Priority Levels</h3>
+<table>
+  <tr><th>Priority</th><th>Color</th><th>Meaning</th></tr>
+  <tr><td>Low</td><td>Seafoam</td><td>Nice to do eventually</td></tr>
+  <tr><td>Medium</td><td>Teal</td><td>Should do soon</td></tr>
+  <tr><td>High</td><td>Amber</td><td>Urgent</td></tr>
+</table>
+
+<h3>Ideas</h3>
+<table>
+  <tr><th>Action</th><th>How to do it</th></tr>
+  <tr><td>Create an idea</td><td>Tap the teal <strong>+</strong> button on the Ideas screen</td></tr>
+  <tr><td>Pin an idea</td><td>Tap the bookmark icon on the idea card</td></tr>
+  <tr><td>Edit an idea</td><td>Tap anywhere on the idea card</td></tr>
+  <tr><td>Delete an idea</td><td>Tap the trash icon on the idea card</td></tr>
+  <tr><td>Change color</td><td>Pick an accent color in the edit form</td></tr>
+</table>
+
+<h3>Sync Status Bar</h3>
+<table>
+  <tr><th>Status</th><th>Meaning</th></tr>
+  <tr><td>Syncing…</td><td>Writing changes to Google Drive</td></tr>
+  <tr><td>Synced</td><td>All changes saved to Drive</td></tr>
+  <tr><td>Offline</td><td>No internet — changes queued locally</td></tr>
+  <tr><td>Sync failed</td><td>Drive API error — pull to refresh to retry</td></tr>
+</table>
+
+
+<!-- ─── SECTION 11 ─── -->
+<h2 class="section">Troubleshooting</h2>
+
+<h3>Error: redirect_uri_mismatch</h3>
+<p>
+  The redirect URI in the app doesn't match Google Cloud Console.
+  Go to Credentials → Web Client ID → add <code>http://localhost:19006</code>
+  and your Vercel URL as Authorized redirect URIs.
+</p>
+
+<h3>Error: Access blocked — app not verified</h3>
+<p>
+  Go to APIs & Services → OAuth consent screen → Audience tab →
+  Test users → Add Users → enter <code>hbudida@gmail.com</code> → Save.
+</p>
+
+<h3>npm install fails with ERESOLVE</h3>
+<pre>
+npm install --legacy-peer-deps</pre>
+<p>The <code>.npmrc</code> file in the project already sets this automatically.</p>
+
+<h3>npx / npm not found in PowerShell</h3>
+<p>
+  Use <strong>Command Prompt (cmd)</strong> instead of PowerShell.
+  Node.js PATH works correctly in cmd on this machine.
+</p>
+
+<h3>App shows blank screen or crash</h3>
+<ol>
+  <li>Check the terminal for error messages</li>
+  <li>Make sure <code>.env</code> has correct Google Client IDs</li>
+  <li>Run <code>npx expo start --web</code> and check the browser console (F12)</li>
+</ol>
+
+<h3>Data not syncing</h3>
+<ol>
+  <li>Check internet connection</li>
+  <li>Pull down to refresh on Tasks or Ideas screen</li>
+  <li>Go to Settings and tap the refresh icon next to Sync Status</li>
+  <li>Sign out and sign back in if the issue persists</li>
+</ol>
+
+<h3>Quick reference commands</h3>
+<pre>
+<span class="comment"># Run locally (web)</span>
+cd c:\A-Claude\TaskIdea
+npx expo start --web
+
+<span class="comment"># Build and deploy to Vercel</span>
+npx expo export --platform web
+vercel dist --prod
+
+<span class="comment"># Build Android APK</span>
+eas build --platform android --profile preview
+
+<span class="comment"># Reinstall dependencies</span>
+rmdir /s /q node_modules
+del package-lock.json
+npm install --legacy-peer-deps</pre>
+
+</div><!-- end .content -->
+
+<footer>
+  TaskIdea v1.0.0 &nbsp;|&nbsp; Built with React Native (Expo) &nbsp;|&nbsp;
+  Your data stays in your Google Drive &nbsp;|&nbsp; April 2026
+</footer>
+
+</body>
+</html>

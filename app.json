@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "TaskIdea",
+    "slug": "taskidea",
+    "scheme": "taskidea",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "bundleIdentifier": "com.taskidea.app",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.taskidea.app"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "backgroundColor": "#0A1628"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
