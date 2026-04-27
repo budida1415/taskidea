@@ -44,9 +44,9 @@ function AuthGuard() {
 }
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts(Ionicons.font)
+  const [fontsLoaded, fontError] = useFonts(Ionicons.font)
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontError) {
     return (
       <View style={styles.splash}>
         <ActivityIndicator size="large" color={colors.teal[500]} />
