@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, ActivityIndicator, StyleSheet, Platform } from 'react-native'
 import { Stack, useRouter, useSegments } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -46,7 +46,8 @@ function AuthGuard() {
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts(Ionicons.font)
 
-  if (!fontsLoaded && !fontError) {
+  // On web, Ionicons load via CSS bundle — useFonts never resolves, skip the wait
+  if (Platform.OS !== 'web' && !fontsLoaded && !fontError) {
     return (
       <View style={styles.splash}>
         <ActivityIndicator size="large" color={colors.teal[500]} />
