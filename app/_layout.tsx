@@ -60,10 +60,10 @@ function AuthGuard() {
 }
 
 export default function RootLayout() {
-  const [fontsLoaded, fontError] = useFonts(Ionicons.font)
+  // On web, Ionicons load via CSS — passing {} resolves instantly and avoids OTS font errors
+  const [fontsLoaded] = useFonts(Platform.OS === 'web' ? {} : Ionicons.font)
 
-  // On web, Ionicons load via CSS bundle — useFonts never resolves, skip the wait
-  if (Platform.OS !== 'web' && !fontsLoaded && !fontError) {
+  if (!fontsLoaded) {
     return (
       <View style={styles.splash}>
         <ActivityIndicator size="large" color={colors.teal[500]} />
