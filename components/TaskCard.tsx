@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Platform,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Task } from '../types'
@@ -28,6 +29,13 @@ export function TaskCard({ task, onEdit }: Props) {
   }
 
   function handleDelete() {
+    if (Platform.OS === 'web') {
+      if (window.confirm(`Delete "${task.title}"?`)) {
+        deleteTask(task.id)
+        scheduleSyncToDrive()
+      }
+      return
+    }
     Alert.alert('Delete Task', `Delete "${task.title}"?`, [
       { text: 'Cancel', style: 'cancel' },
       {

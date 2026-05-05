@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Idea } from '../types'
 import { useAppStore } from '../store/useAppStore'
@@ -21,6 +21,13 @@ export function IdeaCard({ idea, onEdit }: Props) {
   }
 
   function handleDelete() {
+    if (Platform.OS === 'web') {
+      if (window.confirm(`Delete "${idea.title}"?`)) {
+        deleteIdea(idea.id)
+        scheduleSyncToDrive()
+      }
+      return
+    }
     Alert.alert('Delete Idea', `Delete "${idea.title}"?`, [
       { text: 'Cancel', style: 'cancel' },
       {
