@@ -148,6 +148,7 @@ export default function TasksScreen() {
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.filterRow}
+        style={styles.filterScroll}
       >
         {FILTERS.map((f) => {
           const isActive = filter === f.key
@@ -307,11 +308,16 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
   },
+  filterScroll: {
+    flexGrow: 0,
+    flexShrink: 0,
+  },
   filterRow: {
     paddingHorizontal: 20,
     paddingBottom: 12,
     gap: 8,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   filterBtn: {
     paddingHorizontal: 16,
