@@ -12,29 +12,35 @@ import { Ionicons } from '@expo/vector-icons'
 import { useAppStore } from '../../store/useAppStore'
 import { useDriveSync } from '../../hooks/useDriveSync'
 import { TaskCard } from '../../components/TaskCard'
+import { RecurringTaskCard } from '../../components/RecurringTaskCard'
 import { AddEditTaskModal } from '../../components/AddEditTaskModal'
+import { AddEditRecurringModal } from '../../components/AddEditRecurringModal'
 import { SyncStatusBar } from '../../components/SyncStatusBar'
 import { EmptyState } from '../../components/EmptyState'
 import { colors } from '../../constants/colors'
-import { Task, TaskFilter } from '../../types'
+import { Task, RecurringTask, TaskFilter } from '../../types'
 
 const FILTERS: { key: TaskFilter; label: string }[] = [
   { key: 'all', label: 'All' },
   { key: 'active', label: 'Active' },
   { key: 'completed', label: 'Done' },
+  { key: 'recurring', label: 'Recurring' },
 ]
 
 export default function TasksScreen() {
   const tasks = useAppStore((s) => s.tasks)
+  const recurringTasks = useAppStore((s) => s.recurringTasks)
   const { syncFromDrive } = useDriveSync()
   const insets = useSafeAreaInsets()
 
   const [filter, setFilter] = useState<TaskFilter>('all')
   const [refreshing, setRefreshing] = useState(false)
-  const [modalVisible, setModalVisible] = useState(false)
+  const [taskModalVisible, setTaskModalVisible] = useState(false)
+  const [recurringModalVisible, setRecurringModalVisible] = useState(false)
   const [editingTask, setEditingTask] = useState<Task | null>(null)
+  const [editingRecurring, setEditingRecurring] = useState<RecurringTask | null>(null)
 
-  const filtered = useMemo(() => {
+  const filteredTasks = useMemo(() => {
     const sorted = [...tasks].sort(
       (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     )
@@ -42,6 +48,11 @@ export default function TasksScreen() {
     if (filter === 'completed') return sorted.filter((t) => t.completed)
     return sorted
   }, [tasks, filter])
+
+  const sortedRecurring = useMemo(
+    () => [...recurringTasks].sort((a, b) => a.nextDueDate.localeCompare(b.nextDueDate)),
+    [recurringTasks]
+  )
 
   const activeCount = tasks.filter((t) => !t.completed).length
 
@@ -51,15 +62,27 @@ export default function TasksScreen() {
     setRefreshing(false)
   }
 
-  function handleEdit(task: Task) {
+  function handleEditTask(task: Task) {
     setEditingTask(task)
-    setModalVisible(true)
+    setTaskModalVisible(true)
+  }
+
+  function handleEditRecurring(task: RecurringTask) {
+    setEditingRecurring(task)
+    setRecurringModalVisible(true)
   }
 
   function openNew() {
-    setEditingTask(null)
-    setModalVisible(true)
+    if (filter === 'recurring') {
+      setEditingRecurring(null)
+      setRecurringModalVisible(true)
+    } else {
+      setEditingTask(null)
+      setTaskModalVisible(true)
+    }
   }
+
+  const isRecurring = filter === 'recurring'
 
   return (
     <View style={styles.root}>
@@ -67,10 +90,24 @@ export default function TasksScreen() {
       <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <View>
           <Text style={styles.screenTitle}>Tasks</Text>
-          {activeCount > 0 && (
+          {!isRecurring && activeCount > 0 && (
             <Text style={styles.subtitle}>{activeCount} remaining</Text>
           )}
+          {isRecurring && (
+            <Text style={styles.subtitle}>{recurringTasks.length} templates</Text>
+          )}
         </View>
+        <TouchableOpacity
+          onPress={() => setFilter('recurring')}
+          style={[styles.recurringIconBtn, isRecurring && styles.recurringIconBtnActive]}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <Ionicons
+            name="refresh-circle-outline"
+            size={26}
+            color={isRecurring ? colors.teal[400] : colors.text.muted}
+          />
+        </TouchableOpacity>
       </View>
 
       <SyncStatusBar onRetry={syncFromDrive} />
@@ -90,38 +127,68 @@ export default function TasksScreen() {
         ))}
       </View>
 
-      {/* Task list */}
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <TaskCard task={item} onEdit={handleEdit} />}
-        contentContainerStyle={[
-          styles.list,
-          filtered.length === 0 && styles.listEmpty,
-        ]}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            tintColor={colors.teal[400]}
-            colors={[colors.teal[400]]}
-          />
-        }
-        ListEmptyComponent={
-          <EmptyState
-            icon="checkmark-circle-outline"
-            title={filter === 'completed' ? 'No completed tasks' : 'No tasks yet'}
-            subtitle={
-              filter === 'all'
-                ? 'Tap + to create your first task'
-                : filter === 'active'
-                ? 'All tasks are complete!'
-                : 'Complete some tasks to see them here'
-            }
-          />
-        }
-      />
+      {/* List */}
+      {isRecurring ? (
+        <FlatList
+          data={sortedRecurring}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <RecurringTaskCard task={item} onEdit={handleEditRecurring} />
+          )}
+          contentContainerStyle={[
+            styles.list,
+            sortedRecurring.length === 0 && styles.listEmpty,
+          ]}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              tintColor={colors.teal[400]}
+              colors={[colors.teal[400]]}
+            />
+          }
+          ListEmptyComponent={
+            <EmptyState
+              icon="refresh-circle-outline"
+              title="No recurring tasks"
+              subtitle="Tap + to add a bill or obligation that repeats"
+            />
+          }
+        />
+      ) : (
+        <FlatList
+          data={filteredTasks}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <TaskCard task={item} onEdit={handleEditTask} />}
+          contentContainerStyle={[
+            styles.list,
+            filteredTasks.length === 0 && styles.listEmpty,
+          ]}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              tintColor={colors.teal[400]}
+              colors={[colors.teal[400]]}
+            />
+          }
+          ListEmptyComponent={
+            <EmptyState
+              icon="checkmark-circle-outline"
+              title={filter === 'completed' ? 'No completed tasks' : 'No tasks yet'}
+              subtitle={
+                filter === 'all'
+                  ? 'Tap + to create your first task'
+                  : filter === 'active'
+                  ? 'All tasks are complete!'
+                  : 'Complete some tasks to see them here'
+              }
+            />
+          }
+        />
+      )}
 
       {/* FAB */}
       <TouchableOpacity
@@ -133,9 +200,14 @@ export default function TasksScreen() {
       </TouchableOpacity>
 
       <AddEditTaskModal
-        visible={modalVisible}
+        visible={taskModalVisible}
         task={editingTask}
-        onClose={() => setModalVisible(false)}
+        onClose={() => setTaskModalVisible(false)}
+      />
+      <AddEditRecurringModal
+        visible={recurringModalVisible}
+        task={editingRecurring}
+        onClose={() => setRecurringModalVisible(false)}
       />
     </View>
   )

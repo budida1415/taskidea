@@ -7,9 +7,12 @@ export const DRIVE_UPLOAD_API = 'https://www.googleapis.com/upload/drive/v3'
 export const USERINFO_API = 'https://www.googleapis.com/userinfo/v2/me'
 export const TOKEN_REVOKE_API = 'https://oauth2.googleapis.com/revoke'
 
+export const RECURRING_FILE = 'recurring.json'
+
 export const CACHE_KEYS = {
   TASKS: 'taskidea_tasks_cache',
   IDEAS: 'taskidea_ideas_cache',
+  RECURRING: 'taskidea_recurring_cache',
 } as const
 
 export const SECURE_STORE_KEYS = {

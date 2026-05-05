@@ -32,4 +32,18 @@ export interface User {
 
 export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error' | 'offline'
 
-export type TaskFilter = 'all' | 'active' | 'completed'
+export type TaskFilter = 'all' | 'active' | 'completed' | 'recurring'
+
+export type RecurrencePeriod = 'weekly' | 'monthly' | 'half-yearly' | 'yearly'
+
+export interface RecurringTask {
+  id: string
+  title: string
+  description?: string
+  priority: 'low' | 'medium' | 'high'
+  tags: string[]
+  recurrence: RecurrencePeriod
+  nextDueDate: string
+  createdAt: string
+  updatedAt: string
+}

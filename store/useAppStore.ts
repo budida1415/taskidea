@@ -1,21 +1,25 @@
 import { create } from 'zustand'
-import { Task, Idea, User, SyncStatus } from '../types'
+import { Task, Idea, User, SyncStatus, RecurringTask } from '../types'
 
 interface AppState {
   user: User | null
   tasks: Task[]
   ideas: Idea[]
+  recurringTasks: RecurringTask[]
   syncStatus: SyncStatus
   folderId: string | null
   taskFileId: string | null
   ideaFileId: string | null
+  recurringFileId: string | null
 
   setUser: (user: User | null) => void
   setTasks: (tasks: Task[]) => void
   setIdeas: (ideas: Idea[]) => void
+  setRecurringTasks: (tasks: RecurringTask[]) => void
   setSyncStatus: (status: SyncStatus) => void
   setFolderId: (id: string) => void
   setFileIds: (taskFileId: string | null, ideaFileId: string | null) => void
+  setRecurringFileId: (id: string | null) => void
 
   addTask: (task: Task) => void
   updateTask: (id: string, updates: Partial<Omit<Task, 'id' | 'createdAt'>>) => void
@@ -26,6 +30,10 @@ interface AppState {
   updateIdea: (id: string, updates: Partial<Omit<Idea, 'id' | 'createdAt'>>) => void
   deleteIdea: (id: string) => void
   togglePinIdea: (id: string) => void
+
+  addRecurring: (task: RecurringTask) => void
+  updateRecurring: (id: string, updates: Partial<Omit<RecurringTask, 'id' | 'createdAt'>>) => void
+  deleteRecurring: (id: string) => void
 }
 
 const now = () => new Date().toISOString()
@@ -34,17 +42,21 @@ export const useAppStore = create<AppState>((set) => ({
   user: null,
   tasks: [],
   ideas: [],
+  recurringTasks: [],
   syncStatus: 'idle',
   folderId: null,
   taskFileId: null,
   ideaFileId: null,
+  recurringFileId: null,
 
   setUser: (user) => set({ user }),
   setTasks: (tasks) => set({ tasks }),
   setIdeas: (ideas) => set({ ideas }),
+  setRecurringTasks: (recurringTasks) => set({ recurringTasks }),
   setSyncStatus: (syncStatus) => set({ syncStatus }),
   setFolderId: (folderId) => set({ folderId }),
   setFileIds: (taskFileId, ideaFileId) => set({ taskFileId, ideaFileId }),
+  setRecurringFileId: (recurringFileId) => set({ recurringFileId }),
 
   addTask: (task) => set((s) => ({ tasks: [...s.tasks, task] })),
   updateTask: (id, updates) =>
@@ -71,4 +83,14 @@ export const useAppStore = create<AppState>((set) => ({
         i.id === id ? { ...i, pinned: !i.pinned, updatedAt: now() } : i
       ),
     })),
+
+  addRecurring: (task) => set((s) => ({ recurringTasks: [...s.recurringTasks, task] })),
+  updateRecurring: (id, updates) =>
+    set((s) => ({
+      recurringTasks: s.recurringTasks.map((t) =>
+        t.id === id ? { ...t, ...updates, updatedAt: now() } : t
+      ),
+    })),
+  deleteRecurring: (id) =>
+    set((s) => ({ recurringTasks: s.recurringTasks.filter((t) => t.id !== id) })),
 }))
