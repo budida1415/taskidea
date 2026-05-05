@@ -54,7 +54,11 @@ export default function TasksScreen() {
     [recurringTasks]
   )
 
+  const today = new Date().toISOString().split('T')[0]
   const activeCount = tasks.filter((t) => !t.completed).length
+  const overdueCount = tasks.filter(
+    (t) => !t.completed && !!t.dueDate && t.dueDate < today
+  ).length
 
   async function handleRefresh() {
     setRefreshing(true)
@@ -92,6 +96,9 @@ export default function TasksScreen() {
           <Text style={styles.screenTitle}>Tasks</Text>
           {!isRecurring && activeCount > 0 && (
             <Text style={styles.subtitle}>{activeCount} remaining</Text>
+          )}
+          {!isRecurring && overdueCount > 0 && (
+            <Text style={styles.overdueText}>{overdueCount} overdue</Text>
           )}
           {isRecurring && (
             <Text style={styles.subtitle}>{recurringTasks.length} templates</Text>
@@ -234,6 +241,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     marginTop: 2,
+  },
+  overdueText: {
+    color: colors.warning,
+    fontSize: 12,
+    fontWeight: '600',
+    marginTop: 1,
   },
   filterRow: {
     flexDirection: 'row',

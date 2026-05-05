@@ -16,6 +16,7 @@ interface Props {
 const RECURRENCE_LABELS: Record<RecurringTask['recurrence'], string> = {
   weekly: 'Weekly',
   monthly: 'Monthly',
+  quarterly: 'Quarterly',
   'half-yearly': 'Half-Yearly',
   yearly: 'Yearly',
 }

@@ -24,6 +24,12 @@ interface Props {
   onClose: () => void
 }
 
+const tomorrowISO = () => {
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  return d.toISOString().split('T')[0]
+}
+
 const PRIORITIES: Array<Task['priority']> = ['low', 'medium', 'high']
 const PRIORITY_LABELS = { low: 'Low', medium: 'Medium', high: 'High' }
 
@@ -52,7 +58,7 @@ export function AddEditTaskModal({ visible, task, onClose }: Props) {
         tags: [...task.tags],
       })
     } else {
-      setForm(EMPTY)
+      setForm({ ...EMPTY, dueDate: tomorrowISO() })
     }
     setTagInput('')
   }, [task, visible])

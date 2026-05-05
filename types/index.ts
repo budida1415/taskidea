@@ -34,7 +34,7 @@ export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error' | 'offline'
 
 export type TaskFilter = 'all' | 'active' | 'completed' | 'recurring'
 
-export type RecurrencePeriod = 'weekly' | 'monthly' | 'half-yearly' | 'yearly'
+export type RecurrencePeriod = 'weekly' | 'monthly' | 'quarterly' | 'half-yearly' | 'yearly'
 
 export interface RecurringTask {
   id: string

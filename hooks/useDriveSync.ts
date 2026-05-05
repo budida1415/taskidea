@@ -15,6 +15,7 @@ function advanceDate(iso: string, period: RecurrencePeriod): string {
   const d = new Date(iso)
   if (period === 'weekly') d.setDate(d.getDate() + 7)
   if (period === 'monthly') d.setMonth(d.getMonth() + 1)
+  if (period === 'quarterly') d.setMonth(d.getMonth() + 3)
   if (period === 'half-yearly') d.setMonth(d.getMonth() + 6)
   if (period === 'yearly') d.setFullYear(d.getFullYear() + 1)
   return d.toISOString().split('T')[0]

@@ -30,6 +30,7 @@ const PRIORITY_LABELS = { low: 'Low', medium: 'Medium', high: 'High' }
 const RECURRENCES: Array<{ key: RecurrencePeriod; label: string }> = [
   { key: 'weekly', label: 'Weekly' },
   { key: 'monthly', label: 'Monthly' },
+  { key: 'quarterly', label: 'Quarterly' },
   { key: 'half-yearly', label: 'Half-Yearly' },
   { key: 'yearly', label: 'Yearly' },
 ]
