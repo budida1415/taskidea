@@ -32,7 +32,7 @@ export interface User {
 
 export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error' | 'offline'
 
-export type TaskFilter = 'all' | 'active' | 'completed' | 'recurring'
+export type TaskFilter = 'all' | 'active' | 'completed' | 'overdue' | 'recurring'
 
 export type RecurrencePeriod = 'weekly' | 'monthly' | 'quarterly' | 'half-yearly' | 'yearly'
 
